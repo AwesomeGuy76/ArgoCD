@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deploy-mounted2
+spec:
+  selector:
+    matchLabels:
+      tier: backend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        tier: backend
+    spec:
+      containers:
+      - name: back-app
+        image: suhwan11/hello-world:49
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts: # 생성한 볼륨 마운트 
+        - name: efs-volume
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 200m
+            memory: 200M
+      volumes: # 위에서 생성한 PVC를 이용하여 볼륨 생성 
+      - name: efs-volume
+        persistentVolumeClaim:
+          claimName: efs-claim
