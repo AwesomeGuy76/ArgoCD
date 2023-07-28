@@ -1,1 +1,0 @@
-FROM Nginx:latest
