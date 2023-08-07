@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
       - name: reca1team-was-server
-        image: 447079561480.dkr.ecr.ap-northeast-2.amazonaws.com/reca1team-ecr-repo:backend-v1.0
+        image: 447079561480.dkr.ecr.ap-northeast-2.amazonaws.com/reca1team-ecr-repo:backend-v2.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
