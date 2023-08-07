@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reca1team-web-server
+  labels:
+    app: web-server
+spec:
+  type: NodePort
+  selector:
+    app: web-server
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+        - name: reca1team-web-server
+          image: 447079561480.dkr.ecr.ap-northeast-2.amazonaws.com/reca1team-ecr-repo:frontend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: reca1team-web-server-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web-server
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 40
